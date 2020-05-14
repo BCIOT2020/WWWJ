@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+         http://www.springframework.org/schema/tx   
+    http://www.springframework.org/schema/tx/spring-tx-2.5.xsd  
+         http://www.springframework.org/schema/aop   
+    http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+
+    <bean id="encryptType" class="org.fisco.bcos.web3j.crypto.EncryptType">
+        <constructor-arg value="0"/> <!-- 0:standard 1:guomi -->
+    </bean>
+
+    <bean id="groupChannelConnectionsConfig" class="org.fisco.bcos.channel.handler.GroupChannelConnectionsConfig">
+        <property name="caCert" value="ca1.crt" />
+        <property name="sslCert" value="sdk1.crt" />
+        <property name="sslKey" value="sdk1.key" />
+        <property name="allChannelConnections">
+            <list>
+                <bean id="group1"  class="org.fisco.bcos.channel.handler.ChannelConnections">
+                    <property name="groupId" value="1" />
+                    <property name="connectionsStr">
+                        <list>
+                            <value>49.235.6.18:20205</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <bean id="user2" class="org.fisco.bcos.channel.client.PEMManager" init-method="load" >
+        <property name="pemFile" value="classpath:0x23fbbe12488be2ca211ff49fd2564be0a1c8b060.pem" />
+    </bean>
+    <bean id="p12" class="org.fisco.bcos.channel.client.P12Manager" init-method="load" >
+        <property name="password" value="123456" />
+        <property name="p12File" value="classpath:0xe1f9230aee5ff0d09e545cee99527173876c73d2.p12" />
+    </bean>
+    <bean id="channelService" class="org.fisco.bcos.channel.client.Service" depends-on="groupChannelConnectionsConfig">
+        <property name="groupId" value="1" />
+        <property name="agencyName" value="fisco" />
+        <property name="allChannelConnections" ref="groupChannelConnectionsConfig"></property>
+    </bean>
+
+</beans>

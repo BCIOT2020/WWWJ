@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group 'sample'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    //solidity编译器maven库
+    maven { url "https://dl.bintray.com/ethereum/maven/" }
+    //javaSDK snapshot版本 maven库
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    //javaSDK maven库
+    maven{  url "http://maven.aliyun.com/nexus/content/groups/public/" }
+    //通用maven库
+    mavenCentral()
+}
+
+
+
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    //JavaSDK依赖，2.1.0版本
+    compile ('org.fisco-bcos:web3sdk:2.2.2')
+    compile fileTree(dir:'libs',include:['*.jar'])
+}
